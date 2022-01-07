@@ -7,8 +7,9 @@
 int main() {
     clock_t start = clock();
 
+    int test = 1;
     for(int i = 0; i < ITERATIONS; i++) {
-        int test = 1 * 1;
+        test = 1 * 1;
     }
 
     clock_t end = clock();
@@ -18,5 +19,5 @@ int main() {
 
     printf("Clock speed approximately %.3f GHz\n", operations / GIGAHERTZ_OPERATIONS);
 
-    return 0;
+    return test;
 }
