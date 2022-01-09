@@ -111,3 +111,72 @@ XOR(carry_in, carry_out)
 
 
 ### byte ordering
+
+9001 in big-endian is 00100011 00101001.
+
+#### TCP
+
+source port: 
+10101111 00000000 = 44800
+
+destination port: 
+10111100 00000110 = 48134
+
+sequence number: 
+01000100 00011110 01110011 01101000 = 1142846312
+
+acknowledgment number:
+11101111 11110010 10100000 00000010 = 4025655298
+
+specified length of TCP header:
+1000 = 8 * 4 = 32 32-bit words
+
+Implies options should exist.
+
+#### Byte ordering and integer encoding in bitmaps
+
+
+
+### IEEE Floating Point
+
+Largest 64-bit float: 2^52 * 2^(2^11) - 1 = ~1.455 * 10^632
+
+Smallest 64-bit float: 
+
+#### deconstruction
+
+0 10000100010 10100000000000000000
+
+0: positive sign
+
+10000100: exponent = 128 + 4 = 132
+
+01010100000000000000000: significand = 0b1.010101 = 1 + 1/4 + 1/16 + 1/64 = 1.328125
+
+1.328125 * 2 ^ (132-127) = 42.5
+
+For the largest fixed exponent, 
+11111110 == 254 - 127 = 127,
+the smallest change is 1 / (2^23) * 2^127 = 2^104
+
+For the smallest fixed exponent,
+00000001 == 1 - 127 = -126,
+the smallest change is 1 / (2^23) * 2^(-126) = 2^(-149)
+
+The precision of IEEE floating point values 
+is higher around zero, 
+and lower at higher orders of magnitude. 
+This is good for scientific measurements. 
+
+#### float casting
+
+Round number to next highest power of two by
+converting integer to a float,
+bit-shifting off the significand,
+un-offset the exponent bias,
+apply exponent to the integer 1 for the value rounded down to nearest power of two,
+then bit-shifting left if result is less than original value.
+
+
+### character encodings
+
