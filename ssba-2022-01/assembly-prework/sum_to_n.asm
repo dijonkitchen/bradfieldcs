@@ -9,7 +9,6 @@ sum_to_n: ; inclusive
 .loop:
     add rax, rbx
     add rbx, 1
-    jmp .compare
 
 .compare:
     cmp rbx, rdi
