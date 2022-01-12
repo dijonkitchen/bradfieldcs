@@ -27,6 +27,33 @@ binary_convert:
 ; when no more digits,
 ; return sum
     mov rax, 0 ; sum
-    mov rbx, 1 ; initial power of 2^0
+    mov rbx, 0 ; string length
+    mov rcx, 1 ; power of two
 
-	ret
+.loop:
+    cmp rdi, 0
+    jne .increaseLength
+    jmp .math
+
+.increaseLength:
+    add rbx, 1
+    add rdi, 1
+    jmp .loop
+
+.math:
+    cmp rdi, 1
+    jeq .addToSum
+    jmp .advance
+
+.addToSum:
+    add rax, rcx
+    jmp .math
+
+.advance:
+    add rbx, 1
+    add rdi, 1
+    mul rcx, 2
+    jmp .math
+
+.exit:
+    ret
