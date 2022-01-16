@@ -30,7 +30,7 @@ struct Tokens {
 
 struct Tokens *scanner(char *string) {
     int string_length = strlen(string);
-    struct Token *ts = malloc(sizeof(struct Token) * string_length);
+    struct Token *ts = calloc(string_length, sizeof(struct Token));
     int tokenCount = 0;
 
     for (int i = 0; i < string_length; i++) {
