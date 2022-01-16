@@ -23,20 +23,20 @@ struct Token {
 //    char *lexeme;
 };
 
-struct Tokens {
+struct TokensAndCount {
     struct Token *tokens;
     int count;
 };
 
-struct Tokens *scanner(char *string) {
+struct TokensAndCount *scanner(char *string) {
     int string_length = strlen(string);
-    struct Token *ts = calloc(string_length, sizeof(struct Token));
+    struct Token *tokensPtr = calloc(string_length, sizeof(struct Token));
     int tokenCount = 0;
 
     for (int i = 0; i < string_length; i++) {
         char c = string[i];
         printf("c: %c, i: %d, tokenCount: %d\n", c, i, tokenCount);
-        struct Token *currentTokenPtr = &ts[tokenCount];
+        struct Token *currentTokenPtr = &tokensPtr[tokenCount];
 
 //        if (i != 0) {
 //            int previousType = tokens[i - 1].type;
@@ -89,20 +89,20 @@ struct Tokens *scanner(char *string) {
         tokenCount++;
     }
 
-    struct Tokens *tokens = malloc(sizeof(struct Token));
-    tokens->tokens = ts;
-    tokens->count = tokenCount;
+    struct TokensAndCount *tokensAndCountPtr = malloc(sizeof(struct Token));
+    tokensAndCountPtr->tokens = tokensPtr;
+    tokensAndCountPtr->count = tokenCount;
 
-    return tokens;
+    return tokensAndCountPtr;
 }
 
 int main(int argc, char *argv[]) {
     char *string = argv[1];
 
-    struct Tokens *tokens = scanner(string);
+    struct TokensAndCount *tokensAndCountPtr = scanner(string);
 
-    for (int c = 0; c < tokens->count; c++) {
-        printf("type: %u, lexeme: %c\n", tokens->tokens[c].type, tokens->tokens[c].lexeme);
+    for (int c = 0; c < tokensAndCountPtr->count; c++) {
+        printf("type: %u, lexeme: %c\n", tokensAndCountPtr->tokens[c].type, tokensAndCountPtr->tokens[c].lexeme);
     }
 
     return 0;
