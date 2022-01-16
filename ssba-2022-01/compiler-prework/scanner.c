@@ -8,7 +8,7 @@ enum TokenType {
     DECIMAL_POINT,
 
     PLUS,
-    MINUS,
+    NEGATION,
     LEFT_PAREN,
     RIGHT_PAREN,
     DIVIDE,
@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
                 currentTokenPtr->type = PLUS;
                 break;
             case '-':
-                currentTokenPtr->type = MINUS;
+                currentTokenPtr->type = NEGATION;
                 break;
             case '(':
                 currentTokenPtr->type = LEFT_PAREN;
