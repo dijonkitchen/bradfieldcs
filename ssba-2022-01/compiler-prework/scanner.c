@@ -26,59 +26,70 @@ int main(int argc, char *argv[]) {
     char *string = argv[1];
     int string_length = strlen(string);
     struct Token tokens[string_length];
+    int tokenCount = 0;
 
     for (int i = 0; i < string_length; i++) {
         char c = string[i];
-//        int previousType = tokens[i - 1].type;
+        printf("c: %c, i: %d, tokenCount: %d\n", c, i, tokenCount);
+
+        if (i != 0) {
+//            int previousType = tokens[tokenCount - 1].type;
 //
-//        if (previousType == WHITE_SPACE) {
-//            continue;
-//        } else if (previousType < PLUS) {
+//            if (previousType == WHITE_SPACE) {
+//                continue;
+//            }
+//        else if (previousType < PLUS) {
 //            tokens[i].lexeme = strcat(tokens[i].lexeme, (char[2]) {c, '\0'});
 //            continue;
 //        } else {
-//        tokens[i].lexeme = (char[2]) {c, '\0'};
+//            tokens[i].lexeme = (char[2]) {c, '\0'};
 //        }
+        }
 
-        tokens[i].lexeme = c;
+        struct Token *currentToken = &tokens[tokenCount];
+
+        currentToken->lexeme = c;
 
         switch (c) {
             case '+':
-                tokens[i].type = PLUS;
+                currentToken->type = PLUS;
                 break;
             case '-':
-                tokens[i].type = MINUS;
+                currentToken->type = MINUS;
                 break;
             case '(':
-                tokens[i].type = LEFT_PAREN;
+                currentToken->type = LEFT_PAREN;
                 break;
             case ')':
-                tokens[i].type = RIGHT_PAREN;
+                currentToken->type = RIGHT_PAREN;
                 break;
             case '/':
-                tokens[i].type = DIVIDE;
+                currentToken->type = DIVIDE;
                 break;
             case '*':
-                tokens[i].type = MULTIPLY;
+                currentToken->type = MULTIPLY;
                 break;
             case '^':
-                tokens[i].type = EXPONENT;
+                currentToken->type = EXPONENT;
                 break;
             case '.':
-                tokens[i].type = DECIMAL_POINT;
+                currentToken->type = DECIMAL_POINT;
                 break;
             case ' ':
-                tokens[i].type = WHITE_SPACE;
+                currentToken->type = WHITE_SPACE;
                 break;
             default:
-                tokens[i].type = NUMBER;
+                currentToken->type = NUMBER;
                 break;
         }
+
+        printf("type: %u, lexeme: %c\n", tokens[tokenCount].type, tokens[tokenCount].lexeme);
+
+        tokenCount++;
     }
 
-    for (int i = 0; i < strlen(string); i++) {
-        printf("lexeme: %c\n", tokens[i].lexeme);
-        printf("type: %u\n", tokens[i].type);
+    for (int i = 0; i < tokenCount; i++) {
+        printf("type: %u, lexeme: %c\n", tokens[i].type, tokens[i].lexeme);
     }
 
     return 0;
