@@ -31,6 +31,7 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < string_length; i++) {
         char c = string[i];
         printf("c: %c, i: %d, tokenCount: %d\n", c, i, tokenCount);
+        struct Token *currentTokenPtr = &tokens[tokenCount];
 
 //        if (i != 0) {
 //            int previousType = tokens[i - 1].type;
@@ -44,39 +45,37 @@ int main(int argc, char *argv[]) {
 //        }
 //        }
 
-        struct Token *currentToken = &tokens[tokenCount];
-
-        currentToken->lexeme = c;
+        currentTokenPtr->lexeme = c;
 
         switch (c) {
             case '+':
-                currentToken->type = PLUS;
+                currentTokenPtr->type = PLUS;
                 break;
             case '-':
-                currentToken->type = MINUS;
+                currentTokenPtr->type = MINUS;
                 break;
             case '(':
-                currentToken->type = LEFT_PAREN;
+                currentTokenPtr->type = LEFT_PAREN;
                 break;
             case ')':
-                currentToken->type = RIGHT_PAREN;
+                currentTokenPtr->type = RIGHT_PAREN;
                 break;
             case '/':
-                currentToken->type = DIVIDE;
+                currentTokenPtr->type = DIVIDE;
                 break;
             case '*':
-                currentToken->type = MULTIPLY;
+                currentTokenPtr->type = MULTIPLY;
                 break;
             case '^':
-                currentToken->type = EXPONENT;
+                currentTokenPtr->type = EXPONENT;
                 break;
             case '.':
-                currentToken->type = DECIMAL_POINT;
+                currentTokenPtr->type = DECIMAL_POINT;
                 break;
             case ' ':
                 continue;
             default:
-                currentToken->type = NUMBER;
+                currentTokenPtr->type = NUMBER;
                 break;
         }
 
@@ -85,8 +84,8 @@ int main(int argc, char *argv[]) {
         tokenCount++;
     }
 
-    for (int i = 0; i < tokenCount; i++) {
-        printf("type: %u, lexeme: %c\n", tokens[i].type, tokens[i].lexeme);
+    for (int c = 0; c < tokenCount; c++) {
+        printf("type: %u, lexeme: %c\n", tokens[c].type, tokens[c].lexeme);
     }
 
     return 0;
