@@ -32,19 +32,17 @@ int main(int argc, char *argv[]) {
         char c = string[i];
         printf("c: %c, i: %d, tokenCount: %d\n", c, i, tokenCount);
 
-        if (i != 0) {
-//            int previousType = tokens[tokenCount - 1].type;
-//
-//            if (previousType == WHITE_SPACE) {
-//                continue;
-//            }
+//        if (i != 0) {
+//            int previousType = tokens[i - 1].type;
+//            printf("prev type: %d", previousType);
+
 //        else if (previousType < PLUS) {
 //            tokens[i].lexeme = strcat(tokens[i].lexeme, (char[2]) {c, '\0'});
 //            continue;
 //        } else {
 //            tokens[i].lexeme = (char[2]) {c, '\0'};
 //        }
-        }
+//        }
 
         struct Token *currentToken = &tokens[tokenCount];
 
@@ -76,14 +74,13 @@ int main(int argc, char *argv[]) {
                 currentToken->type = DECIMAL_POINT;
                 break;
             case ' ':
-                currentToken->type = WHITE_SPACE;
-                break;
+                continue;
             default:
                 currentToken->type = NUMBER;
                 break;
         }
 
-        printf("type: %u, lexeme: %c\n", tokens[tokenCount].type, tokens[tokenCount].lexeme);
+//        printf("type: %u, lexeme: %c\n", tokens[tokenCount].type, tokens[tokenCount].lexeme);
 
         tokenCount++;
     }
