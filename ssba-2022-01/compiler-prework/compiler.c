@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 enum TokenType {
@@ -22,16 +23,20 @@ struct Token {
 //    char *lexeme;
 };
 
-int main(int argc, char *argv[]) {
-    char *string = argv[1];
+struct Tokens {
+    struct Token *tokens;
+    int count;
+};
+
+struct Tokens *scanner(char *string) {
     int string_length = strlen(string);
-    struct Token tokens[string_length];
+    struct Token *ts = malloc(sizeof(struct Token) * string_length);
     int tokenCount = 0;
 
     for (int i = 0; i < string_length; i++) {
         char c = string[i];
         printf("c: %c, i: %d, tokenCount: %d\n", c, i, tokenCount);
-        struct Token *currentTokenPtr = &tokens[tokenCount];
+        struct Token *currentTokenPtr = &ts[tokenCount];
 
 //        if (i != 0) {
 //            int previousType = tokens[i - 1].type;
@@ -84,8 +89,20 @@ int main(int argc, char *argv[]) {
         tokenCount++;
     }
 
-    for (int c = 0; c < tokenCount; c++) {
-        printf("type: %u, lexeme: %c\n", tokens[c].type, tokens[c].lexeme);
+    struct Tokens *tokens = malloc(sizeof(struct Token));
+    tokens->tokens = ts;
+    tokens->count = tokenCount;
+
+    return tokens;
+}
+
+int main(int argc, char *argv[]) {
+    char *string = argv[1];
+
+    struct Tokens *tokens = scanner(string);
+
+    for (int c = 0; c < tokens->count; c++) {
+        printf("type: %u, lexeme: %c\n", tokens->tokens[c].type, tokens->tokens[c].lexeme);
     }
 
     return 0;
