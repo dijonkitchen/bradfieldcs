@@ -89,7 +89,7 @@ struct TokensAndCount *scanner(char *string) {
         tokenCount++;
     }
 
-    struct TokensAndCount *pTokensAndCount = malloc(sizeof(struct Token));
+    struct TokensAndCount *pTokensAndCount = malloc(sizeof(char *));
     pTokensAndCount->pTokens = pTokens;
     pTokensAndCount->count = tokenCount;
 
