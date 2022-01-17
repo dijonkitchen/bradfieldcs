@@ -24,19 +24,19 @@ struct Token {
 };
 
 struct TokensAndCount {
-    struct Token *tokens;
+    struct Token *pTokens;
     int count;
 };
 
 struct TokensAndCount *scanner(char *string) {
     int string_length = strlen(string);
-    struct Token *tokensPtr = calloc(string_length, sizeof(struct Token));
+    struct Token *pTokens = calloc(string_length, sizeof(struct Token));
     int tokenCount = 0;
 
     for (int i = 0; i < string_length; i++) {
         char c = string[i];
         printf("c: %c, i: %d, tokenCount: %d\n", c, i, tokenCount);
-        struct Token *currentTokenPtr = &tokensPtr[tokenCount];
+        struct Token *pCurrentToken = &pTokens[tokenCount];
 
 //        if (i != 0) {
 //            int previousType = tokens[i - 1].type;
@@ -50,37 +50,37 @@ struct TokensAndCount *scanner(char *string) {
 //        }
 //        }
 
-        currentTokenPtr->lexeme = c;
+        pCurrentToken->lexeme = c;
 
         switch (c) {
             case '+':
-                currentTokenPtr->type = PLUS;
+                pCurrentToken->type = PLUS;
                 break;
             case '-':
-                currentTokenPtr->type = NEGATION;
+                pCurrentToken->type = NEGATION;
                 break;
             case '(':
-                currentTokenPtr->type = LEFT_PAREN;
+                pCurrentToken->type = LEFT_PAREN;
                 break;
             case ')':
-                currentTokenPtr->type = RIGHT_PAREN;
+                pCurrentToken->type = RIGHT_PAREN;
                 break;
             case '/':
-                currentTokenPtr->type = DIVIDE;
+                pCurrentToken->type = DIVIDE;
                 break;
             case '*':
-                currentTokenPtr->type = MULTIPLY;
+                pCurrentToken->type = MULTIPLY;
                 break;
             case '^':
-                currentTokenPtr->type = EXPONENT;
+                pCurrentToken->type = EXPONENT;
                 break;
             case '.':
-                currentTokenPtr->type = DECIMAL_POINT;
+                pCurrentToken->type = DECIMAL_POINT;
                 break;
             case ' ':
                 continue;
             default:
-                currentTokenPtr->type = NUMBER;
+                pCurrentToken->type = NUMBER;
                 break;
         }
 
@@ -89,20 +89,20 @@ struct TokensAndCount *scanner(char *string) {
         tokenCount++;
     }
 
-    struct TokensAndCount *tokensAndCountPtr = malloc(sizeof(struct Token));
-    tokensAndCountPtr->tokens = tokensPtr;
-    tokensAndCountPtr->count = tokenCount;
+    struct TokensAndCount *pTokensAndCount = malloc(sizeof(struct Token));
+    pTokensAndCount->pTokens = pTokens;
+    pTokensAndCount->count = tokenCount;
 
-    return tokensAndCountPtr;
+    return pTokensAndCount;
 }
 
 int main(int argc, char *argv[]) {
     char *string = argv[1];
 
-    struct TokensAndCount *tokensAndCountPtr = scanner(string);
+    struct TokensAndCount *pTokensAndCount = scanner(string);
 
-    for (int c = 0; c < tokensAndCountPtr->count; c++) {
-        printf("type: %u, lexeme: %c\n", tokensAndCountPtr->tokens[c].type, tokensAndCountPtr->tokens[c].lexeme);
+    for (int c = 0; c < pTokensAndCount->count; c++) {
+        printf("type: %u, lexeme: %c\n", pTokensAndCount->pTokens[c].type, pTokensAndCount->pTokens[c].lexeme);
     }
 
     return 0;
