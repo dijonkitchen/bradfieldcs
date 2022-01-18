@@ -96,6 +96,58 @@ struct TokensAndCount *scanner(char *string) {
     return pTokensAndCount;
 }
 
+// Examples:
+
+// (1+2)*(3+4)
+// grouping -> lparen expression rparen
+//          -> lparen atom + atom rparen
+//          -> lparen atom + atom rparen * grouping
+//          -> lparen atom + atom rparen * lparen expression rparen
+//          -> lparen atom + atom rparen * lparen atom + atom rparen
+
+// (1+ (2 + -3/0) ^ 4)
+// grouping -> lparen expression rparen
+//          -> lparen atom + expression rparen
+//          -> lparen atom + grouping rparen
+//          -> lparen atom + lparen expression rparen rparen
+//          -> lparen atom + lparen atom + expression rparen rparen
+//          -> lparen atom + lparen atom + binaryOperation rparen rparen
+//          -> lparen atom + lparen atom + atom / atom rparen rparen
+//          -> lparen atom + lparen atom + atom / atom rparen ^ atom rparen
+
+
+
+// Recursive descent parsing with a context-free EBNF grammar:
+// Non-terminal to terminal productions:
+// <program> ::= <expression>
+// <expression> ::= <term> ([+-*/^] <term>)*
+// <term> ::= <grouping> | number
+// <grouping> ::= LEFT_PAREN <expression> RIGHT_PAREN
+
+
+//struct AbstractSyntaxTreeNode {
+//    enum operator
+//    struct AbstractSyntaxTreeNode *left;
+//    struct AbstractSyntaxTreeNode *right;
+//};
+//
+//enum Terminals {
+//    NUMBER,
+//    PLUS,
+//    NEGATION,
+//    DIVIDE,
+//    MULTIPLY,
+//    EXPONENT,
+//};
+//
+//struct ContextFreeGrammar {
+//
+//};
+//
+//struct AbstractSyntaxTreeNode *parser(struct TokensAndCount *tokensAndCountPtr) {
+//
+//}
+
 int main(int argc, char *argv[]) {
     char *string = argv[1];
 
