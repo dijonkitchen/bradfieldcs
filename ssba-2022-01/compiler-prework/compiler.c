@@ -19,8 +19,7 @@ enum TokenType {
 
 struct Token {
     enum TokenType type;
-    char lexeme;
-//    char *lexeme;
+    char lexeme[5];
 };
 
 struct TokensAndCount {
@@ -34,13 +33,15 @@ struct TokensAndCount *scanner(char *string) {
     int tokenCount = 0;
 
     for (int i = 0; i < string_length; i++) {
-        char c = string[i];
-        printf("c: %c, i: %d, tokenCount: %d\n", c, i, tokenCount);
+        char ch = string[i];
         struct Token *pCurrentToken = &pTokens[tokenCount];
 
-//        if (i != 0) {
-//            int previousType = tokens[i - 1].type;
+        printf("c: %c, i: %d, tokenCount: %d\n", ch, i, tokenCount);
+
+//        if (i > 0) {
+//            int previousType = pTokens[i - 1].type;
 //            printf("prev type: %d", previousType);
+//        }
 
 //        else if (previousType < PLUS) {
 //            tokens[i].lexeme = strcat(tokens[i].lexeme, (char[2]) {c, '\0'});
@@ -50,9 +51,10 @@ struct TokensAndCount *scanner(char *string) {
 //        }
 //        }
 
-        pCurrentToken->lexeme = c;
+//        pCurrentToken->lexeme = strncat(pCurrentToken->lexeme, &ch, 1);
+        strcpy(pCurrentToken->lexeme, &ch);
 
-        switch (c) {
+        switch (ch) {
             case '+':
                 pCurrentToken->type = PLUS;
                 break;
@@ -154,7 +156,7 @@ int main(int argc, char *argv[]) {
     struct TokensAndCount *pTokensAndCount = scanner(string);
 
     for (int c = 0; c < pTokensAndCount->count; c++) {
-        printf("type: %u, lexeme: %c\n", pTokensAndCount->pTokens[c].type, pTokensAndCount->pTokens[c].lexeme);
+        printf("type: %u, lexeme: %s\n", pTokensAndCount->pTokens[c].type, pTokensAndCount->pTokens[c].lexeme);
     }
 
     return 0;
