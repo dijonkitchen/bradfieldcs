@@ -19,7 +19,7 @@ enum TokenType {
 
 struct Token {
     enum TokenType type;
-    char lexeme[11];
+    char lexeme[111];
 };
 
 struct TokensAndCount {
