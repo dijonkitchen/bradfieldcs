@@ -19,7 +19,7 @@ enum TokenType {
 
 struct Token {
     enum TokenType type;
-    char lexeme[15];
+    char lexeme[16];
 };
 
 struct TokensAndCount {
@@ -30,13 +30,13 @@ struct TokensAndCount {
 struct TokensAndCount *scanner(char *string) {
     int string_length = strlen(string);
     struct Token *pTokens = calloc(string_length, sizeof(struct Token));
-    int tokenCount = 0;
+    int tokenIndex = 0;
 
     for (int i = 0; i < string_length; i++) {
         char ch = string[i];
-        struct Token *pCurrentToken = &pTokens[tokenCount];
+        struct Token *pCurrentToken = &pTokens[tokenIndex];
 
-        printf("c: %c, i: %d, tokenCount: %d\n", ch, i, tokenCount);
+        printf("i: %d, tokenCount: %d, ch: %c, &ch: %p \n", i, tokenIndex, ch, &ch);
 
         switch (ch) {
             case '+':
@@ -70,8 +70,8 @@ struct TokensAndCount *scanner(char *string) {
                 break;
         }
 
-        if (tokenCount > 0) {
-            struct Token *pPreviousToken = &pTokens[tokenCount - 1];
+        if (tokenIndex > 0) {
+            struct Token *pPreviousToken = &pTokens[tokenIndex - 1];
 //            printf("prev type: %d\n", previousType);
 //            printf("less than plus?: %d\n", pCurrentToken->type < PLUS);
             if (pPreviousToken->type < PLUS && pCurrentToken->type < PLUS) {
@@ -83,14 +83,12 @@ struct TokensAndCount *scanner(char *string) {
 //        pCurrentToken->lexeme = strncat(pCurrentToken->lexeme, &ch, 1);
         strcpy(pCurrentToken->lexeme, &ch);
 
-//        printf("type: %u, lexeme: %c\n", tokens[tokenCount].type, tokens[tokenCount].lexeme);
-
-        tokenCount++;
+        tokenIndex++;
     }
 
     struct TokensAndCount *pTokensAndCount = malloc(sizeof(char *));
     pTokensAndCount->pTokens = pTokens;
-    pTokensAndCount->count = tokenCount;
+    pTokensAndCount->count = tokenIndex;
 
     return pTokensAndCount;
 }
@@ -153,7 +151,8 @@ int main(int argc, char *argv[]) {
     struct TokensAndCount *pTokensAndCount = scanner(string);
 
     for (int c = 0; c < pTokensAndCount->count; c++) {
-        printf("type: %u, lexeme: %s\n", pTokensAndCount->pTokens[c].type, pTokensAndCount->pTokens[c].lexeme);
+        printf("type: %u, lexeme: %s, &lexeme: %p \n", pTokensAndCount->pTokens[c].type,
+               pTokensAndCount->pTokens[c].lexeme, &pTokensAndCount->pTokens[c].lexeme);
     }
 
     return 0;
