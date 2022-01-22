@@ -19,7 +19,7 @@ enum TokenType {
 
 struct Token {
     enum TokenType type;
-    char lexeme[16];
+    char lexeme[11];
 };
 
 struct TokensAndCount {
@@ -75,7 +75,7 @@ struct TokensAndCount *scanner(char *string) {
 //            printf("prev type: %d\n", previousType);
 //            printf("less than plus?: %d\n", pCurrentToken->type < PLUS);
             if (pPreviousToken->type < PLUS && pCurrentToken->type < PLUS) {
-                strcat(pPreviousToken->lexeme, &ch);
+                strncat(pPreviousToken->lexeme, &ch, 1);
                 continue;
             }
         }
