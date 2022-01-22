@@ -19,7 +19,7 @@ enum TokenType {
 
 struct Token {
     enum TokenType type;
-    // TODO: make into a painter for arbitrary length
+    // TODO: make into a pointer for arbitrary length
     char lexeme[111];
 };
 
