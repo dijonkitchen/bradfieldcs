@@ -81,7 +81,7 @@ struct TokensAndCount *scanner(char *string) {
         }
 
 //        pCurrentToken->lexeme = strncat(pCurrentToken->lexeme, &ch, 1);
-        strcpy(pCurrentToken->lexeme, &ch);
+        strncpy(pCurrentToken->lexeme, &ch, 1);
 
         tokenIndex++;
     }
