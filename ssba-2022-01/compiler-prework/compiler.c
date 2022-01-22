@@ -19,6 +19,7 @@ enum TokenType {
 
 struct Token {
     enum TokenType type;
+    // TODO: make into a painter for arbitrary length
     char lexeme[111];
 };
 
@@ -27,6 +28,7 @@ struct TokensAndCount {
     int count;
 };
 
+// AKA lexer or tokenizer
 struct TokensAndCount *scanner(char *string) {
     int string_length = strlen(string);
     struct Token *pTokens = calloc(string_length, sizeof(struct Token));
@@ -36,7 +38,7 @@ struct TokensAndCount *scanner(char *string) {
         char ch = string[i];
         struct Token *pCurrentToken = &pTokens[tokenIndex];
 
-        printf("i: %d, tokenCount: %d, ch: %c, &ch: %p \n", i, tokenIndex, ch, &ch);
+//        printf("i: %d, tokenCount: %d, ch: %c, &ch: %p \n", i, tokenIndex, ch, &ch);
 
         switch (ch) {
             case '+':
@@ -151,8 +153,10 @@ int main(int argc, char *argv[]) {
     struct TokensAndCount *pTokensAndCount = scanner(string);
 
     for (int c = 0; c < pTokensAndCount->count; c++) {
-        printf("type: %u, lexeme: %s, &lexeme: %p \n", pTokensAndCount->pTokens[c].type,
-               pTokensAndCount->pTokens[c].lexeme, &pTokensAndCount->pTokens[c].lexeme);
+        printf("type: %u, lexeme: %s \n", pTokensAndCount->pTokens[c].type,
+               pTokensAndCount->pTokens[c].lexeme);
+//        printf("type: %u, lexeme: %s, &lexeme: %p \n", pTokensAndCount->pTokens[c].type,
+//               pTokensAndCount->pTokens[c].lexeme, &pTokensAndCount->pTokens[c].lexeme);
     }
 
     return 0;
