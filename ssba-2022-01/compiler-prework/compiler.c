@@ -95,68 +95,42 @@ struct TokensAndCount *scanner(char *string) {
     return pTokensAndCount;
 }
 
-
 // Recursive descent parsing productions with a context-free EBNF grammar:
 // <program_start> ::= <expression>
-// <expression> ::= <terminal> | <grouping> | <expression> <operator> <expression>
-// <terminal> ::= number
-// <operator> ::= [+-*/^]
-// <grouping> ::= LEFT_PAREN <expression> RIGHT_PAREN
-
+// <expression> ::= <term>
+// <term> ::= <factor> ((+ | - ) <factor>)*
+// <factor> ::= <primary> (( * | / ) <primary>)*
+// <primary> ::= NUMBER | LEFT_PAREN <expression> RIGHT_PAREN
 
 // Examples:
 
 // (1+2)*(3+4)
 // program -> <expression>
-// program -> <expression> <operator> <expression>
-// program -> <grouping> <operator> <expression>
-// program -> <grouping> <operator> <expression>
-// program -> lparen <expression> rparen <operator> <expression>
-// program -> lparen <expression> <operator> <expression> rparen <operator> <expression>
-// program -> lparen <terminal> <operator> <expression> rparen <operator> <expression>
-// program -> lparen number <operator> <expression> rparen <operator> <expression>
-// program -> lparen number + <expression> rparen <operator> <expression>
-// program -> lparen number + <terminal> rparen <operator> <expression>
-// program -> lparen number + number rparen <operator> <expression>
-// program -> lparen number + number rparen * <expression>
-// program -> lparen number + number rparen * <grouping>
-// program -> lparen number + number rparen * lparen <expression> rparen
-// program -> lparen number + number rparen * lparen <expression> <operator> <expression> rparen
-// program -> lparen number + number rparen * lparen <terminal> <operator> <expression> rparen
-// program -> lparen number + number rparen * lparen number <operator> <expression> rparen
-// program -> lparen number + number rparen * lparen number + <expression> rparen
-// program -> lparen number + number rparen * lparen number + <terminal> rparen
-// program -> lparen number + number rparen * lparen number + number rparen
+// program -> <primary> * <primary>
+// program -> LEFT_PAREN <expression> RIGHT_PAREN * <primary>
+// program -> LEFT_PAREN <factor> + <factor> RIGHT_PAREN * <primary>
+// program -> LEFT_PAREN NUMBER + NUMBER RIGHT_PAREN * <primary>
+// program -> LEFT_PAREN NUMBER + NUMBER RIGHT_PAREN * LEFT_PAREN NUMBER + NUMBER RIGHT_PAREN
 
 // (1+ (2 + -3/0) ^ 4)
 // program -> <expression>
-// program -> <grouping>
-// program -> lparen <expression> rparen
-// program -> lparen <expression> <operator> <expression> rparen
-// program -> lparen <terminal> <operator> <expression> rparen
-// program -> lparen number <operator> <expression> rparen
-// program -> lparen number + <expression> rparen
-// program -> lparen number + <expression> <operator> <expression> rparen
-// program -> lparen number + <grouping> <operator> <expression> rparen
-// program -> lparen number + lparen <expression> <operator> <expression> rparen <operator> <expression> rparen
-// program -> lparen number + lparen <terminal> <operator> <expression> rparen <operator> <expression> rparen
-// program -> lparen number + lparen number <operator> <expression> rparen <operator> <expression> rparen
-// program -> lparen number + lparen number + <expression> rparen <operator> <expression> rparen
-// program -> lparen number + lparen number + <expression> <operator> <expression> rparen <operator> <expression> rparen
-// program -> lparen number + lparen number + number <operator> <expression> rparen <operator> <expression> rparen
-// program -> lparen number + lparen number + number / <expression> rparen <operator> <expression> rparen
-// program -> lparen number + lparen number + number / number rparen <operator> <expression> rparen
-// program -> lparen number + lparen number + number / number rparen ^ <expression> rparen
-// program -> lparen number + lparen number + number / number rparen ^ <terminal> rparen
-// program -> lparen number + lparen number + number / number rparen ^ number rparen
+// program -> LEFT_PAREN <expression> RIGHT_PAREN
+// program -> LEFT_PAREN <factor> + <factor> RIGHT_PAREN
+// program -> LEFT_PAREN NUMBER + <factor> RIGHT_PAREN
+// program -> LEFT_PAREN NUMBER + LEFT_PAREN <expression> RIGHT_PAREN RIGHT_PAREN
+// program -> LEFT_PAREN NUMBER + LEFT_PAREN <factor> + <factor> RIGHT_PAREN RIGHT_PAREN
+// program -> LEFT_PAREN NUMBER + LEFT_PAREN NUMBER + <factor> RIGHT_PAREN RIGHT_PAREN
+// program -> LEFT_PAREN NUMBER + LEFT_PAREN NUMBER + <primary> / <primary> RIGHT_PAREN RIGHT_PAREN
+// program -> LEFT_PAREN NUMBER + LEFT_PAREN NUMBER + NUMBER / NUMBER  RIGHT_PAREN RIGHT_PAREN
 
 
-//struct AbstractSyntaxTreeNode {
-//    enum operator
-//    struct AbstractSyntaxTreeNode *left;
-//    struct AbstractSyntaxTreeNode *right;
-//};
-//
+struct AbstractSyntaxTreeNode {
+    enum operator
+    struct AbstractSyntaxTreeNode *parent;
+    struct AbstractSyntaxTreeNode *left;
+    struct AbstractSyntaxTreeNode *right;
+};
+
 //enum Terminals {
 //    NUMBER,
 //    PLUS,
@@ -169,10 +143,13 @@ struct TokensAndCount *scanner(char *string) {
 //struct ContextFreeGrammar {
 //
 //};
-//
-//struct AbstractSyntaxTreeNode *parser(struct TokensAndCount *tokensAndCountPtr) {
-//
-//}
+
+struct AbstractSyntaxTreeNode *parser(struct TokensAndCount *pTokensAndCount) {
+    for (int c = 0; c < pTokensAndCount->count; c++) {
+        printf("type: %u, lexeme: %s \n", pTokensAndCount->pTokens[c].type,
+               pTokensAndCount->pTokens[c].lexeme);
+    }
+}
 
 int main(int argc, char *argv[]) {
     char *string = argv[1];
