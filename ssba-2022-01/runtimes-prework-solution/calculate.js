@@ -50,7 +50,6 @@ const parse_expression = tokens => {
 };
 
 const parse_term = tokens => {
-    let expr, remaining_tokens;
     if (tokens[0].type === 'leftparen') {
         return parse_group(tokens);
     } else if (tokens[0].type === 'number') {
@@ -104,14 +103,13 @@ const compile = node => {
                     code.push(['divide']);
                     break;
                 default:
-                    throw Error('Unknown binary operator:', node.operator.value);
+                    throw Error(`Unknown binary operator: ${node.operator.value}`);
             }
             console.log(code);
             return code;
         }
         default: {
             throw Error(`Unknown AST node: ${JSON.stringify(node)}`);
-            break;
         }
     }
 };
