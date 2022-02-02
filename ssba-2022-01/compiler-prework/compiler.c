@@ -125,42 +125,63 @@ struct TokensAndCount *scanner(char *string) {
 
 
 struct AbstractSyntaxTreeNode {
-    enum operator
-    struct AbstractSyntaxTreeNode *parent;
+    enum TokenType type;
+    int value;
     struct AbstractSyntaxTreeNode *left;
     struct AbstractSyntaxTreeNode *right;
 };
 
-//enum Terminals {
-//    NUMBER,
-//    PLUS,
-//    NEGATION,
-//    DIVIDE,
-//    MULTIPLY,
-//    EXPONENT,
-//};
-//
-//struct ContextFreeGrammar {
-//
-//};
-
 struct AbstractSyntaxTreeNode *parser(struct TokensAndCount *pTokensAndCount) {
-    for (int c = 0; c < pTokensAndCount->count; c++) {
-        printf("type: %u, lexeme: %s \n", pTokensAndCount->pTokens[c].type,
-               pTokensAndCount->pTokens[c].lexeme);
+    // create an AST node for initial program token
+    // Loop through tokens
+    // create an AST node for token
+    // Check token type
+    // If expression
+    //   make nodes for children and set current node as parent
+    //   return recurse parser through children
+    // If term
+    // If factor
+    // If primary
+    //   Set value as number
+    //   return node
+
+
+    // if not first token,
+    //      set parent to previous node
+    //        if terminal value
+    //             set value and no children
+    //        else
+    //             set operator and children
+    struct AbstractSyntaxTreeNode *pNodes = calloc(pTokensAndCount->count, sizeof(struct AbstractSyntaxTreeNode));
+
+    for (int i = 0; i < pTokensAndCount->count; i++) {
+        struct AbstractSyntaxTreeNode currentNode = pNodes[i];
+
+        currentNode.operator = pTokensAndCount->pTokens[i].type;
+        if (i == 0) {
+            currentNode.parent = NULL;
+        } else {
+            currentNode.parent = &(pNodes[i - 1]);
+        }
+        currentNode.left = NULL;
+        currentNode.right = NULL;
     }
+
+    return pNodes;
 }
 
 int main(int argc, char *argv[]) {
     char *string = argv[1];
 
     struct TokensAndCount *pTokensAndCount = scanner(string);
+    struct AbstractSyntaxTreeNode *astNodes = parser(pTokensAndCount);
 
-    for (int c = 0; c < pTokensAndCount->count; c++) {
-        printf("type: %u, lexeme: %s \n", pTokensAndCount->pTokens[c].type,
-               pTokensAndCount->pTokens[c].lexeme);
-//        printf("type: %u, lexeme: %s, &lexeme: %p \n", pTokensAndCount->pTokens[c].type,
-//               pTokensAndCount->pTokens[c].lexeme, &pTokensAndCount->pTokens[c].lexeme);
+    for (int i = 0; i < pTokensAndCount->count; i++) {
+        printf("type: %u, lexeme: %s \n", pTokensAndCount->pTokens[i].type,
+               pTokensAndCount->pTokens[i].lexeme);
+
+        printf("operator: %u, parent: %u left: %u right: %u \n", astNodes[i].operator, astNodes[i].parent->operator,
+               astNodes[i].left->operator, astNodes[i].right->operator);
     }
 
     return 0;
