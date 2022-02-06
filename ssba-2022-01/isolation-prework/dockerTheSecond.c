@@ -35,7 +35,8 @@ int child(void *arg) {
 
 int main(int argc, char**argv) {
   struct child_config config = {0};
-  int flags = 0 | CLONE_NEWNET | CLONE_NEWPID;
+  int flags = 0 | CLONE_NEWNET | CLONE_NEWPID | CLONE_NEWIPC 
+	  | CLONE_NEWNS | CLONE_NEWUSER | CLONE_NEWUTS | CLONE_NEWCGROUP;
   pid_t child_pid = 0;
 
   // Prepare child configuration
