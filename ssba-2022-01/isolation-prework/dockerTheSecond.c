@@ -16,6 +16,13 @@ struct child_config {
 int child(void *arg) {
   struct child_config *config = arg;
 
+  const pid_t pid = getpid();
+  if (pid == 1) {
+    printf("PID namespaces are working\n");
+  } else {
+    printf("PID namespaces ARE NOT working. Child pid: %d\n", pid);
+  }
+
   if (execvpe(config->argv[0], config->argv, NULL)) {
     fprintf(stderr, "execvpe failed %m.\n");
 
@@ -28,7 +35,7 @@ int child(void *arg) {
 
 int main(int argc, char**argv) {
   struct child_config config = {0};
-  int flags = 0 | CLONE_NEWNET;
+  int flags = 0 | CLONE_NEWNET | CLONE_NEWPID;
   pid_t child_pid = 0;
 
   // Prepare child configuration
