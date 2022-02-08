@@ -1,9 +1,11 @@
 #define _GNU_SOURCE
 #include <sched.h>
-#include <sys/wait.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/prctl.h>
+#include <sys/wait.h>
+#include <linux/capability.h>
 
 #define STACK_SIZE 65536
 
@@ -11,6 +13,16 @@ struct child_config {
   int argc;
   char **argv;
 };
+
+int drop_capabilities() {
+  int capabilities_to_drop[] = {
+    CAP_DAC_OVERRIDE
+  };
+
+  prctl(PR_CAPBSET_DROP, CAP_DAC_OVERRIDE, 0, 0, 0);
+
+  return 0;
+}
 
 /* Entry point for child after `clone` */
 int child(void *arg) {
@@ -22,6 +34,8 @@ int child(void *arg) {
   } else {
     printf("PID namespaces ARE NOT working. Child pid: %d\n", pid);
   }
+  
+  drop_capabilities();
 
   if (execvpe(config->argv[0], config->argv, NULL)) {
     fprintf(stderr, "execvpe failed %m.\n");
