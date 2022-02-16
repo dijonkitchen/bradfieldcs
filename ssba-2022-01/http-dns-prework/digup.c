@@ -30,6 +30,20 @@ int main(void) {
     printf("Socket data port: %hu\n", socket_address_internet.sin_port);
 
     // encode query message
+    // header
+    int id = 0b0;
+    int qr = 0b1;
+    int opcode = 0b0;
+    int aa = 0b0;
+    int tc = 0b0;
+    int rd = 0b0;
+    int ra = 0b0;
+    int z = 0b0;
+    int rcode = 0b0;
+    int qdcount = 0b1;
+    int ancount = 0b0;
+    int nscount = 0b0;
+    int arcount = 0b0;
 
 
     // send query message
