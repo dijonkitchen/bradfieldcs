@@ -63,7 +63,6 @@ Loop through tuples of table
             Insert tuple into doubly-linked list for sequential search range
         Else
             Split parent node
-            If parent is root node,
-                Create new root node
-                Point root node to children
+            Add new pointer into appropriate sorted node
+            Add pointer to new split node in parent using same function recursively
 ```
